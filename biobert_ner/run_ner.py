@@ -1,13 +1,14 @@
 import logging
 import os
 import sys
-
+sys.path.append('./')
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 from seqeval.metrics import f1_score, precision_score, recall_score
 from torch import nn
+import torch
 
 from transformers import (
     AutoConfig,
@@ -206,7 +207,7 @@ def main():
             model_path=model_args.model_name_or_path if os.path.isdir(model_args.model_name_or_path) else None
         )
         trainer.save_model()
-        if trainer.is_world_master():
+        if trainer.is_world_process_zero():
             tokenizer.save_pretrained(training_args.output_dir)
 
     # Evaluation
@@ -217,7 +218,7 @@ def main():
         result = trainer.evaluate()
         
         output_eval_file = os.path.join(training_args.output_dir, "eval_results.txt")
-        if trainer.is_world_master():
+        if trainer.is_world_process_zero():
             with open(output_eval_file, "w") as writer:
                 logger.info("***** Eval results *****")
                 for key, value in result.items():
@@ -245,7 +246,7 @@ def main():
         
         # Save predictions
         output_test_results_file = os.path.join(training_args.output_dir, "test_results.txt")
-        if trainer.is_world_master():
+        if trainer.is_world_process_zero():
             with open(output_test_results_file, "w") as writer:
                 logger.info("***** Test results *****")
                 for key, value in metrics.items():
@@ -254,7 +255,7 @@ def main():
 
         output_test_predictions_file = os.path.join(training_args.output_dir, "test_predictions.txt")
         prev_pred = ""
-        if trainer.is_world_master():
+        if trainer.is_world_process_zero():
             with open(output_test_predictions_file, "w") as writer:
                 with open(os.path.join(data_args.data_dir, "test.txt"), "r") as f:
                     example_id = 0

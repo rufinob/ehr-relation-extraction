@@ -21,14 +21,12 @@ class Entity(Annotation):
                  char_range: List[int] = None) -> None:
         """
         Initializes Entity object.
-
         Parameters
         ----------
         entity_id : str
             Unique entity ID.
         entity_type : str, optional
             The type of entity. The default is None.
-
         """
         super().__init__(entity_id, entity_type)
         if char_range is None:
@@ -37,6 +35,18 @@ class Entity(Annotation):
             self.range: List[int] = char_range
         self.ann_text: str = ""
         self.relation_group: str = ""
+
+    def get_id(self)->str:
+        return self.entity_id
+
+    def get_entity_name(self)->str:
+        return self.entity_type
+    
+    def get_char_range(self)->str:
+        return str(self.range[0])+'-'+str(self.range[1])
+    
+    def get_entity_text(self)->str:
+        return self.ann_text
 
     def set_range(self, new_range: List[int]) -> None:
         """

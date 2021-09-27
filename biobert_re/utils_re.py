@@ -37,7 +37,6 @@ logger = logging.getLogger(__name__)
 class GlueDataTrainingArguments:
     """
     Arguments pertaining to what data we are going to input our model for training and eval.
-
     Using `HfArgumentParser` we can turn this class into argparse arguments to be able to specify them on the command
     line.
     """
@@ -335,7 +334,6 @@ def generate_re_input_files(ehr_records: List[HealthRecord], filename: str,
                     write_file(file, index, final_text, label, sep, is_test, is_label)
                     index_rel_label_map.append({'label': label, 'relation': rel})
                     index += 1
-
     filename, ext = filename.split('.')
     utils.save_pickle(filename+'_rel.pkl', index_rel_label_map)
 
@@ -343,12 +341,10 @@ def generate_re_input_files(ehr_records: List[HealthRecord], filename: str,
 def get_eval_results(answer_path, output_path):
     """
     Get evaluation metrics for predictions
-
     Parameters
     ------------
     answer_path : test.tsv file. Tab-separated.
                   One example per a line. True labels at the 3rd column.
-
     output_path : test_predictions.txt. Model generated predictions.
     """
     testdf = pd.read_csv(answer_path, sep="\t", index_col=0)
@@ -370,15 +366,12 @@ def generate_re_test_file(ehr_record: HealthRecord,
                           max_len: int = 128) -> Tuple[List[str], List[Relation]]:
     """
     Generates test file for Relation Extraction.
-
     Parameters
     -----------
     ehr_record : HealthRecord
         The EHR record with entities set.
-
     max_len : int
         The maximum length of sequence.
-
     Returns
     --------
     Tuple[List[str], List[Relation]]

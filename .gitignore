@@ -5,6 +5,7 @@ __pycache__/
 /rule_based_ner/__pycache__/
 /biobert_re/__pycache/
 /biobert_ner/__pycache__/
+/tmp/
 
 # Flask stuff:
 instance/
@@ -36,6 +37,7 @@ runs/
 results/
 notebooks/
 predicted_annotations/
+
 
 # IntelliJ files
 /annotating-ehr.iml
